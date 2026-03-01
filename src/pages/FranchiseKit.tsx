@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { jsPDF } from "jspdf";
 import { Download, CheckCircle, FileText, BarChart3, Users, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,9 +38,95 @@ export default function FranchiseKit() {
   });
 
   const onSubmit = (data: FormData) => {
-    // In production, send data to backend before enabling download
     setSubmitted(true);
     toast({ title: "Success!", description: "Your franchise kit is ready to download." });
+  };
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    const contentWidth = pageWidth - margin * 2;
+    let y = 30;
+
+    // Header
+    doc.setFontSize(28);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(34, 34, 34);
+    doc.text("ZAPLY", margin, y);
+    y += 8;
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(100, 100, 100);
+    doc.text("Franchise Opportunity Kit", margin, y);
+    y += 4;
+    doc.setDrawColor(0, 180, 120);
+    doc.setLineWidth(1);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 16;
+
+    // Section helper
+    const addSection = (title: string, items: string[]) => {
+      if (y > 260) { doc.addPage(); y = 30; }
+      doc.setFontSize(16);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(34, 34, 34);
+      doc.text(title, margin, y);
+      y += 10;
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(60, 60, 60);
+      items.forEach((item) => {
+        if (y > 270) { doc.addPage(); y = 30; }
+        const lines = doc.splitTextToSize(item, contentWidth - 6);
+        doc.text(lines, margin + 4, y);
+        y += lines.length * 6 + 3;
+      });
+      y += 6;
+    };
+
+    addSection("Business Model Overview", [
+      "Zaply provides a proven franchise model focused on hyperlocal quick-commerce delivery.",
+      "Franchisees operate under the Zaply brand with full technology, logistics, and marketing support.",
+      "Low overhead model with lean operations and high scalability potential.",
+    ]);
+
+    addSection("Investment Breakdown", [
+      "Initial franchise fee: ₹5,00,000 – ₹10,00,000 (varies by city tier)",
+      "Setup & infrastructure: ₹3,00,000 – ₹6,00,000",
+      "Working capital requirement: ₹2,00,000 – ₹4,00,000",
+      "Total estimated investment: ₹10,00,000 – ₹20,00,000",
+    ]);
+
+    addSection("Revenue & ROI Projections", [
+      "Average monthly revenue per unit: ₹8,00,000 – ₹15,00,000",
+      "Expected break-even timeline: 8 – 14 months",
+      "Projected ROI within 24 months: 40% – 70%",
+      "Multiple revenue streams: delivery commissions, subscription fees, advertising.",
+    ]);
+
+    addSection("Support & Training", [
+      "Comprehensive 2-week onboarding program covering operations, technology & marketing.",
+      "Dedicated franchise success manager for the first 6 months.",
+      "Access to Zaply's proprietary technology platform and analytics dashboard.",
+      "Ongoing marketing support including local campaigns and brand collateral.",
+      "Regular performance reviews and growth strategy sessions.",
+    ]);
+
+    addSection("Next Steps", [
+      "1. Review this kit and prepare your questions.",
+      "2. Schedule a discovery call with our franchise team.",
+      "3. Visit portal.zaply.app for more details and to apply.",
+      "4. Complete due diligence and sign the franchise agreement.",
+    ]);
+
+    // Footer
+    const footerY = 280;
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.text("© Zaply — portal.zaply.app | This document is confidential.", margin, footerY);
+
+    doc.save("Zaply-Franchise-Kit.pdf");
   };
 
   return (
@@ -160,11 +247,9 @@ export default function FranchiseKit() {
                     <p className="text-muted-foreground mb-6">
                       Click below to download your franchise kit. We've also sent a copy to your email.
                     </p>
-                    <Button variant="hero" size="lg" className="gap-2" asChild>
-                      <a href="#" onClick={(e) => { e.preventDefault(); alert("PDF download would trigger here"); }}>
+                    <Button variant="hero" size="lg" className="gap-2" onClick={downloadPDF}>
                         <Download className="w-5 h-5" />
                         Download Franchise Kit
-                      </a>
                     </Button>
                   </div>
                 )}
