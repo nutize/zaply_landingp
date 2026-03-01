@@ -85,8 +85,8 @@ export function Hero() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </a>
-            <Button variant="outline" size="lg">
-              Download Franchise Kit
+            <Button variant="outline" size="lg" asChild>
+              <a href="/franchise-kit">Download Franchise Kit</a>
             </Button>
           </motion.div>
 
