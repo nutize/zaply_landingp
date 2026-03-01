@@ -53,12 +53,8 @@ export function ContactForm() {
       return;
     }
 
-    // Send to WhatsApp
-    const whatsappNumber = "918420323232";
-    const message = encodeURIComponent(
-      `🚀 New Franchise Inquiry\n\n👤 Name: ${result.data.name}\n📧 Email: ${result.data.email}\n📱 Phone: ${result.data.phone}\n💬 Message: ${result.data.message}`
-    );
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
       title: "Thank you for your interest!",
