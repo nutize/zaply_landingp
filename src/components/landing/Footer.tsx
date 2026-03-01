@@ -23,7 +23,7 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Facebook, href: "#" },
+  { icon: Facebook, href: "https://www.facebook.com/zaplyapp" },
   { icon: Twitter, href: "#" },
   { icon: Linkedin, href: "#" },
   { icon: Instagram, href: "#" },
