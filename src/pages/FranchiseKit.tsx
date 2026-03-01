@@ -38,6 +38,13 @@ export default function FranchiseKit() {
   });
 
   const onSubmit = (data: FormData) => {
+    // Send to WhatsApp
+    const whatsappNumber = "918420323232";
+    const message = encodeURIComponent(
+      `📥 Franchise Kit Download\n\n👤 Name: ${data.name}\n📧 Email: ${data.email}\n📱 Phone: ${data.phone}\n🏙️ City: ${data.city}`
+    );
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+
     setSubmitted(true);
     toast({ title: "Success!", description: "Your franchise kit is ready to download." });
   };
