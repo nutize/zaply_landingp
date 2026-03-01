@@ -2,12 +2,7 @@ import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from "luc
 import zaplyLogo from "@/assets/zaply-logo.jpg";
 
 const footerLinks = {
-  company: [
-    { label: "About Us", href: "#" },
-    { label: "Our Story", href: "#" },
-    { label: "Leadership", href: "#" },
-    { label: "Careers", href: "#" },
-  ],
+  company: [],
   franchise: [
     { label: "Why Zaply", href: "#benefits" },
     { label: "Investment", href: "#faq" },
@@ -60,21 +55,6 @@ export function Footer() {
           </div>
 
           {/* Links Columns */}
-          <div>
-            <h4 className="font-heading font-semibold mb-4">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           <div>
             <h4 className="font-heading font-semibold mb-4">Franchise</h4>
