@@ -17,7 +17,7 @@ const footerLinks = {
   resources: [
     { label: "Franchise Kit", href: "/franchise-kit" },
     { label: "Success Stories", href: "#testimonials" },
-    { label: "Blog", href: "#" },
+    
     { label: "FAQ", href: "#faq" },
   ],
 };
