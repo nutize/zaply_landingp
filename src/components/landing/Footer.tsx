@@ -24,7 +24,7 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: Facebook, href: "https://www.facebook.com/zaplyapp" },
-  { icon: Twitter, href: "#" },
+  { icon: Twitter, href: "https://x.com/Sasta_Dukan" },
   { icon: Linkedin, href: "https://www.linkedin.com/in/sasta-dukan-a97a7b1ba/" },
   { icon: Instagram, href: "#" },
 ];
