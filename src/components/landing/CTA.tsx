@@ -38,13 +38,15 @@ export function CTA() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </a>
-            <Button
-              variant="heroOutline"
-              size="lg"
-              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-            >
-              Schedule a Call
-            </Button>
+            <a href="https://zaplyapp.zohobookings.in" target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="heroOutline"
+                size="lg"
+                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+              >
+                Schedule a Call
+              </Button>
+            </a>
           </div>
 
           <p className="mt-8 text-primary-foreground/60 text-sm">
