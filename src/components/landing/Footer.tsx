@@ -114,14 +114,6 @@ export function Footer() {
             ))}
           </div>
 
-          <div className="flex items-center gap-6 text-sm text-primary-foreground/60">
-            <a href="#" className="hover:text-primary-foreground transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-primary-foreground transition-colors">
-              Terms of Service
-            </a>
-          </div>
         </div>
       </div>
     </footer>
