@@ -51,9 +51,11 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" size="sm">
-            Login
-          </Button>
+          <a href="https://zaply.in/auth" target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" size="sm">
+              Login
+            </Button>
+          </a>
           <Button variant="hero" size="default">
             Apply Now
           </Button>
@@ -93,9 +95,11 @@ export function Header() {
                 </a>
               ))}
               <div className="flex flex-col gap-3 pt-4 border-t border-border">
-                <Button variant="ghost" className="justify-start">
-                  Login
-                </Button>
+                <a href="https://zaply.in/auth" target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" className="justify-start">
+                    Login
+                  </Button>
+                </a>
                 <Button variant="hero">Apply Now</Button>
               </div>
             </nav>
