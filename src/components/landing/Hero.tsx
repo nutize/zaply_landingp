@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { downloadFranchiseKit } from "@/lib/downloadFranchiseKit";
 
 const highlights = [
   "Proven business model",
@@ -85,8 +86,8 @@ export function Hero() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </a>
-            <Button variant="outline" size="lg" asChild>
-              <a href="/franchise-kit">Download Franchise Kit</a>
+            <Button variant="outline" size="lg" onClick={downloadFranchiseKit}>
+              Download Franchise Kit
             </Button>
           </motion.div>
 
