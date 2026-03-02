@@ -99,7 +99,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-primary-foreground/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-primary-foreground/60 text-sm">
-            © 2025 Zaply Franchise. All rights reserved.
+            © 2026 Zaply Franchise. All rights reserved.
           </p>
 
           <div className="flex items-center gap-4">
