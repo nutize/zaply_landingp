@@ -56,9 +56,11 @@ export function Header() {
               Login
             </Button>
           </a>
-          <Button variant="hero" size="default">
-            Apply Now
-          </Button>
+          <a href="https://zaply.in/apply" target="_blank" rel="noopener noreferrer">
+            <Button variant="hero" size="default">
+              Apply Now
+            </Button>
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
@@ -100,7 +102,9 @@ export function Header() {
                     Login
                   </Button>
                 </a>
-                <Button variant="hero">Apply Now</Button>
+                <a href="https://zaply.in/apply" target="_blank" rel="noopener noreferrer">
+                  <Button variant="hero">Apply Now</Button>
+                </a>
               </div>
             </nav>
           </motion.div>
