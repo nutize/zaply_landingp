@@ -1,5 +1,6 @@
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import zaplyLogo from "@/assets/zaply-logo.jpg";
+import { downloadFranchiseKit } from "@/lib/downloadFranchiseKit";
 
 const footerLinks = {
   company: [],
@@ -10,7 +11,7 @@ const footerLinks = {
     { label: "Support", href: "#" },
   ],
   resources: [
-    { label: "Franchise Kit", href: "/franchise-kit" },
+    { label: "Franchise Kit", href: "#", onClick: downloadFranchiseKit },
     { label: "Success Stories", href: "#testimonials" },
     
     { label: "FAQ", href: "#faq" },
@@ -79,7 +80,13 @@ export function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                    onClick={(e) => {
+                      if ('onClick' in link && link.onClick) {
+                        e.preventDefault();
+                        (link as any).onClick();
+                      }
+                    }}
+                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors cursor-pointer"
                   >
                     {link.label}
                   </a>
