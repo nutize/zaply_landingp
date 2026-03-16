@@ -3,6 +3,8 @@ import { jsPDF } from "jspdf";
 
 export interface OfferLetterData {
   candidateName: string;
+  candidateAddress: string;
+  candidateEmail: string;
   dateOfJoining: string;
   salary: string;
 }
@@ -106,6 +108,13 @@ export async function downloadOfferLetter(data: OfferLetterData) {
     doc.text(title, margin + 10, y + 5);
     y += 18;
   };
+
+  // --- CANDIDATE ADDRESS ---
+  addBoldLine(`To,`);
+  addBoldLine(data.candidateName);
+  addParagraph(data.candidateAddress);
+  addParagraph(`Email: ${data.candidateEmail}`);
+  y += 2;
 
   // --- GREETING ---
   addParagraph(`Dear ${data.candidateName},`);

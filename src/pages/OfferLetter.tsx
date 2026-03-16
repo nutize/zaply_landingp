@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +18,8 @@ import zaplyLogo from "@/assets/zaply-logo.jpg";
 
 const formSchema = z.object({
   candidateName: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  candidateAddress: z.string().trim().min(5, "Please enter the candidate's address").max(300),
+  candidateEmail: z.string().trim().email("Please enter a valid email address"),
   dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
   salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
 });
@@ -29,13 +32,15 @@ export default function OfferLetter() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: { candidateName: "", salary: "20,000" },
+    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", salary: "20,000" },
   });
 
   const onSubmit = async (data: FormData) => {
     setDownloading(true);
     await downloadOfferLetter({
       candidateName: data.candidateName,
+      candidateAddress: data.candidateAddress,
+      candidateEmail: data.candidateEmail,
       dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
       salary: data.salary,
     });
@@ -83,6 +88,22 @@ export default function OfferLetter() {
                       <FormItem>
                         <FormLabel>Candidate Name</FormLabel>
                         <FormControl><Input placeholder="Full name of the candidate" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="candidateAddress" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Candidate Address</FormLabel>
+                        <FormControl><Textarea placeholder="Full address of the candidate" rows={2} {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="candidateEmail" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Candidate Email</FormLabel>
+                        <FormControl><Input type="email" placeholder="candidate@example.com" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
