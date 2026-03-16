@@ -1,19 +1,5 @@
 import { jsPDF } from "jspdf";
-import zaplyLogo from "@/assets/zaply-logo.jpg";
 
-const loadImage = (src: string): Promise<string> =>
-  new Promise((resolve) => {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      canvas.getContext("2d")!.drawImage(img, 0, 0);
-      resolve(canvas.toDataURL("image/jpeg"));
-    };
-    img.src = src;
-  });
 
 export interface OfferLetterData {
   candidateName: string;
@@ -33,30 +19,29 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   const gray = { r: 80, g: 90, b: 100 };
   const white = { r: 255, g: 255, b: 255 };
 
-  const logoBase64 = await loadImage(zaplyLogo);
-
   // --- HEADER BAR ---
   doc.setFillColor(navy.r, navy.g, navy.b);
-  doc.rect(0, 0, pageWidth, 40, "F");
+  doc.rect(0, 0, pageWidth, 44, "F");
   doc.setFillColor(orange.r, orange.g, orange.b);
-  doc.rect(0, 40, pageWidth, 3, "F");
-  doc.addImage(logoBase64, "JPEG", margin, 6, 28, 28);
-  doc.setFontSize(18);
+  doc.rect(0, 44, pageWidth, 3, "F");
+  doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(white.r, white.g, white.b);
-  doc.text("ZAPLY", margin + 34, 22);
-  doc.setFontSize(9);
+  doc.text("Zaply.Apps Webtech LLP", margin, 16);
+  doc.setFontSize(8.5);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(200, 215, 230);
-  doc.text("Quick Commerce · Franchise · Technology", margin + 34, 30);
+  doc.text("Brands: Zaply · Nutize · SastaDukan · eDigicom", margin, 24);
+  doc.text("14, Dhakuria Kalibari Lane, Ground Floor, Kolkata - 700 031, WB", margin, 30);
+  doc.text("Email: hr@nutize.co.in", margin, 36);
 
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
   doc.setFontSize(10);
   doc.setTextColor(200, 215, 230);
-  doc.text(`Date: ${dateStr}`, pageWidth - margin, 24, { align: "right" });
+  doc.text(`Date: ${dateStr}`, pageWidth - margin, 16, { align: "right" });
 
-  let y = 56;
+  let y = 60;
 
   // --- TITLE ---
   doc.setFillColor(255, 248, 240);
@@ -125,7 +110,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   // --- GREETING ---
   addParagraph(`Dear ${data.candidateName},`);
   addParagraph(
-    "We are pleased to extend this offer of employment to you for the position of Digital Marketing Manager at Zaply. " +
+    "We are pleased to extend this offer of employment to you for the position of Digital Marketing Manager at Zaply.Apps Webtech LLP. " +
     "We were impressed with your skills and experience, and we believe you will be a valuable addition to our team."
   );
 
@@ -183,14 +168,14 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 6;
   if (y > pageHeight - 70) { doc.addPage(); y = 30; }
   addParagraph(
-    "We are excited to welcome you to the Zaply team and look forward to a mutually rewarding association. " +
+    "We are excited to welcome you to the Zaply.Apps Webtech LLP family and look forward to a mutually rewarding association. " +
     "Please sign and return a copy of this letter as acceptance of this offer."
   );
 
   y += 6;
   addParagraph("Warm Regards,");
   y += 2;
-  addBoldLine("For Zaply");
+  addBoldLine("For Zaply.Apps Webtech LLP");
   y += 12;
   doc.setDrawColor(180, 180, 180);
   doc.line(margin, y, margin + 60, y);
@@ -211,7 +196,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
     pg.rect(0, pageHeight - 12, pageWidth, 12, "F");
     pg.setFontSize(7.5);
     pg.setTextColor(200, 210, 220);
-    pg.text("© 2026 Zaply  •  portal.zaply.app  •  Confidential", pageWidth / 2, pageHeight - 4, { align: "center" });
+    pg.text("© 2026 Zaply.Apps Webtech LLP  •  hr@nutize.co.in  •  Confidential", pageWidth / 2, pageHeight - 4, { align: "center" });
   };
 
   const totalPages = doc.getNumberOfPages();
