@@ -131,6 +131,7 @@ export default function OfferLetter() {
                       </FormItem>
                     )} />
 
+                    <FormField control={form.control} name="dateOfJoining" render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>Date of Joining</FormLabel>
                         <Popover>
