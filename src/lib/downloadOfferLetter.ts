@@ -39,9 +39,9 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   const dateStr = today.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
   doc.setFontSize(10);
   doc.setTextColor(200, 215, 230);
-  doc.text(`Date: ${dateStr}`, pageWidth - margin, 24, { align: "right" });
+  doc.text(`Date: ${dateStr}`, pageWidth - margin, 16, { align: "right" });
 
-  let y = 56;
+  let y = 60;
 
   // --- TITLE ---
   doc.setFillColor(255, 248, 240);
