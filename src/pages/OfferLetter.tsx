@@ -7,12 +7,14 @@ import { z } from "zod";
 import { format } from "date-fns";
 import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon } from "lucide-react";
 import { downloadOfferLetter } from "@/lib/downloadOfferLetter";
+import { POSITION_OPTIONS } from "@/lib/positionConfig";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import zaplyLogo from "@/assets/zaply-logo.jpg";
 

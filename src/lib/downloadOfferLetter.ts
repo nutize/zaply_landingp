@@ -130,9 +130,11 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 2;
   addSectionBar("Position Details");
 
-  addKeyValue("Designation:", "Digital Marketing Manager");
-  addKeyValue("Department:", "Marketing & Business Development");
-  addKeyValue("Reporting To:", "Founder / Head of Operations");
+  const posConfig = POSITIONS[data.position] || POSITIONS["digital-marketing-manager"];
+
+  addKeyValue("Designation:", posConfig.designation);
+  addKeyValue("Department:", posConfig.department);
+  addKeyValue("Reporting To:", posConfig.reportingTo);
   addKeyValue("Date of Joining:", data.dateOfJoining);
   addKeyValue("Location:", "As assigned by the Company");
   addKeyValue("Probation Period:", "2 Months from the date of joining");
@@ -153,18 +155,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 4;
   addSectionBar("Key Responsibilities");
 
-  const responsibilities = [
-    "Social Media Management — strategy, content creation, scheduling, and engagement across all platforms (Instagram, Facebook, LinkedIn, X, etc.)",
-    "Marketplace Listing & Management — product listing, optimization, and day-to-day management on e-commerce and quick-commerce marketplaces",
-    "Digital Platform Handling — managing and optimizing the company's digital platforms, websites, and applications",
-    "AI Integration — leveraging AI tools for marketing automation, content generation, analytics, and campaign optimization",
-    "WhatsApp Marketing & Follow-ups — designing and executing WhatsApp marketing campaigns, customer engagement, and timely follow-ups",
-    "Lead Generation & Follow-ups — implementing lead generation strategies through digital channels and ensuring systematic follow-up processes",
-    "Business Development — identifying new business opportunities, partnerships, and growth channels to expand Zaply's market presence",
-    "Campaign Analytics & Reporting — tracking, analyzing, and reporting on all digital marketing KPIs and campaign performance",
-    "Any other tasks assigned by the management from time to time",
-  ];
-  responsibilities.forEach((r) => addBullet(r));
+  posConfig.responsibilities.forEach((r) => addBullet(r));
 
   // --- TERMS ---
   y += 4;
