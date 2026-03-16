@@ -1,12 +1,15 @@
 import { jsPDF } from "jspdf";
 
 
+import { POSITIONS } from "./positionConfig";
+
 export interface OfferLetterData {
   candidateName: string;
   candidateAddress: string;
   candidateEmail: string;
   dateOfJoining: string;
   salary: string;
+  position: string;
 }
 
 export async function downloadOfferLetter(data: OfferLetterData) {
@@ -115,11 +118,12 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   addParagraph(data.candidateAddress);
   addParagraph(`Email: ${data.candidateEmail}`);
   y += 2;
+  const posConfig = POSITIONS[data.position] || POSITIONS["digital-marketing-manager"];
 
   // --- GREETING ---
   addParagraph(`Dear ${data.candidateName},`);
   addParagraph(
-    "We are pleased to extend this offer of employment to you for the position of Digital Marketing Manager at Zaply.Apps Webtech LLP. " +
+    `We are pleased to extend this offer of employment to you for the position of ${posConfig.designation} at Zaply.Apps Webtech LLP. ` +
     "We were impressed with your skills and experience, and we believe you will be a valuable addition to our team."
   );
 
@@ -127,9 +131,9 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 2;
   addSectionBar("Position Details");
 
-  addKeyValue("Designation:", "Digital Marketing Manager");
-  addKeyValue("Department:", "Marketing & Business Development");
-  addKeyValue("Reporting To:", "Founder / Head of Operations");
+  addKeyValue("Designation:", posConfig.designation);
+  addKeyValue("Department:", posConfig.department);
+  addKeyValue("Reporting To:", posConfig.reportingTo);
   addKeyValue("Date of Joining:", data.dateOfJoining);
   addKeyValue("Location:", "As assigned by the Company");
   addKeyValue("Probation Period:", "2 Months from the date of joining");
@@ -150,18 +154,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 4;
   addSectionBar("Key Responsibilities");
 
-  const responsibilities = [
-    "Social Media Management — strategy, content creation, scheduling, and engagement across all platforms (Instagram, Facebook, LinkedIn, X, etc.)",
-    "Marketplace Listing & Management — product listing, optimization, and day-to-day management on e-commerce and quick-commerce marketplaces",
-    "Digital Platform Handling — managing and optimizing the company's digital platforms, websites, and applications",
-    "AI Integration — leveraging AI tools for marketing automation, content generation, analytics, and campaign optimization",
-    "WhatsApp Marketing & Follow-ups — designing and executing WhatsApp marketing campaigns, customer engagement, and timely follow-ups",
-    "Lead Generation & Follow-ups — implementing lead generation strategies through digital channels and ensuring systematic follow-up processes",
-    "Business Development — identifying new business opportunities, partnerships, and growth channels to expand Zaply's market presence",
-    "Campaign Analytics & Reporting — tracking, analyzing, and reporting on all digital marketing KPIs and campaign performance",
-    "Any other tasks assigned by the management from time to time",
-  ];
-  responsibilities.forEach((r) => addBullet(r));
+  posConfig.responsibilities.forEach((r) => addBullet(r));
 
   // --- TERMS ---
   y += 4;

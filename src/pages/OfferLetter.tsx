@@ -7,12 +7,14 @@ import { z } from "zod";
 import { format } from "date-fns";
 import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon } from "lucide-react";
 import { downloadOfferLetter } from "@/lib/downloadOfferLetter";
+import { POSITION_OPTIONS } from "@/lib/positionConfig";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import zaplyLogo from "@/assets/zaply-logo.jpg";
 
@@ -20,6 +22,7 @@ const formSchema = z.object({
   candidateName: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   candidateAddress: z.string().trim().min(5, "Please enter the candidate's address").max(300),
   candidateEmail: z.string().trim().email("Please enter a valid email address"),
+  position: z.string().min(1, "Please select a position"),
   dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
   salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
 });
@@ -32,7 +35,7 @@ export default function OfferLetter() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", salary: "20,000" },
+    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", position: "", salary: "20,000" },
   });
 
   const onSubmit = async (data: FormData) => {
@@ -41,6 +44,7 @@ export default function OfferLetter() {
       candidateName: data.candidateName,
       candidateAddress: data.candidateAddress,
       candidateEmail: data.candidateEmail,
+      position: data.position,
       dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
       salary: data.salary,
     });
@@ -77,7 +81,7 @@ export default function OfferLetter() {
                   <h1 className="font-heading text-xl font-bold text-foreground">
                     Job Offer Letter
                   </h1>
-                  <p className="text-muted-foreground text-sm">Digital Marketing Manager</p>
+                  <p className="text-muted-foreground text-sm">Generate offer letters for any position</p>
                 </div>
               </div>
 
@@ -104,6 +108,25 @@ export default function OfferLetter() {
                       <FormItem>
                         <FormLabel>Candidate Email</FormLabel>
                         <FormControl><Input type="email" placeholder="candidate@example.com" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="position" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Position / Designation</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a position" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {POSITION_OPTIONS.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )} />
