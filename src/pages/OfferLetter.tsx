@@ -38,6 +38,8 @@ export default function OfferLetter() {
     setDownloading(true);
     await downloadOfferLetter({
       candidateName: data.candidateName,
+      candidateAddress: data.candidateAddress,
+      candidateEmail: data.candidateEmail,
       dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
       salary: data.salary,
     });
