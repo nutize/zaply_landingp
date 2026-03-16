@@ -110,7 +110,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   // --- GREETING ---
   addParagraph(`Dear ${data.candidateName},`);
   addParagraph(
-    "We are pleased to extend this offer of employment to you for the position of Digital Marketing Manager at Zaply. " +
+    "We are pleased to extend this offer of employment to you for the position of Digital Marketing Manager at Zaply.Apps Webtech LLP. " +
     "We were impressed with your skills and experience, and we believe you will be a valuable addition to our team."
   );
 
