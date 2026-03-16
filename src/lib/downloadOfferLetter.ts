@@ -185,19 +185,16 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   addParagraph("Warm Regards,");
   y += 2;
   addBoldLine("For Zaply.Apps Webtech LLP");
-  y += 12;
-  doc.setDrawColor(180, 180, 180);
-  doc.line(margin, y, margin + 60, y);
-  y += 5;
+  y += 4;
+  addBoldLine("K R Ghosh");
   addParagraph("Authorized Signatory");
-
-  y += 14;
-  if (y > pageHeight - 50) { doc.addPage(); y = 30; }
-  addBoldLine("Acceptance by Candidate:");
-  y += 8;
-  addKeyValue("Name:", data.candidateName);
-  addKeyValue("Signature:", "_______________________________");
-  addKeyValue("Date:", "_______________________________");
+  y += 4;
+  doc.setFontSize(9);
+  doc.setFont("helvetica", "italic");
+  doc.setTextColor(gray.r, gray.g, gray.b);
+  if (y > pageHeight - 30) { doc.addPage(); y = 30; }
+  doc.text("This is an Electronic document and doesn't require a Signature.", margin, y);
+  y += 10;
 
   // --- FOOTER ---
   const addFooter = (pg: jsPDF) => {
