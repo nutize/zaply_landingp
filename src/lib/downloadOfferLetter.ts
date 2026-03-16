@@ -3,6 +3,8 @@ import { jsPDF } from "jspdf";
 
 export interface OfferLetterData {
   candidateName: string;
+  candidateAddress: string;
+  candidateEmail: string;
   dateOfJoining: string;
   salary: string;
 }
