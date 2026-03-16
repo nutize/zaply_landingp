@@ -81,7 +81,7 @@ export default function OfferLetter() {
                   <h1 className="font-heading text-xl font-bold text-foreground">
                     Job Offer Letter
                   </h1>
-                  <p className="text-muted-foreground text-sm">Digital Marketing Manager</p>
+                  <p className="text-muted-foreground text-sm">Generate offer letters for any position</p>
                 </div>
               </div>
 
