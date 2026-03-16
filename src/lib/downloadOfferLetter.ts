@@ -1,5 +1,4 @@
 import { jsPDF } from "jspdf";
-import zaplyLogo from "@/assets/zaply-logo.jpg";
 
 const loadImage = (src: string): Promise<string> =>
   new Promise((resolve) => {
