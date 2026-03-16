@@ -175,7 +175,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 6;
   addParagraph("Warm Regards,");
   y += 2;
-  addBoldLine("For Zaply");
+  addBoldLine("For Zaply.Apps Webtech LLP");
   y += 12;
   doc.setDrawColor(180, 180, 180);
   doc.line(margin, y, margin + 60, y);
