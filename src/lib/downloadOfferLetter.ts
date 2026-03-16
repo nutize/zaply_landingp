@@ -1,12 +1,15 @@
 import { jsPDF } from "jspdf";
 
 
+import { POSITIONS } from "./positionConfig";
+
 export interface OfferLetterData {
   candidateName: string;
   candidateAddress: string;
   candidateEmail: string;
   dateOfJoining: string;
   salary: string;
+  position: string;
 }
 
 export async function downloadOfferLetter(data: OfferLetterData) {
