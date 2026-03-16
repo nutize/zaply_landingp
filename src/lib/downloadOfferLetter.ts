@@ -19,22 +19,21 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   const gray = { r: 80, g: 90, b: 100 };
   const white = { r: 255, g: 255, b: 255 };
 
-  const logoBase64 = await loadImage(zaplyLogo);
-
   // --- HEADER BAR ---
   doc.setFillColor(navy.r, navy.g, navy.b);
-  doc.rect(0, 0, pageWidth, 40, "F");
+  doc.rect(0, 0, pageWidth, 44, "F");
   doc.setFillColor(orange.r, orange.g, orange.b);
-  doc.rect(0, 40, pageWidth, 3, "F");
-  doc.addImage(logoBase64, "JPEG", margin, 6, 28, 28);
-  doc.setFontSize(18);
+  doc.rect(0, 44, pageWidth, 3, "F");
+  doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(white.r, white.g, white.b);
-  doc.text("ZAPLY", margin + 34, 22);
-  doc.setFontSize(9);
+  doc.text("Zaply.Apps Webtech LLP", margin, 16);
+  doc.setFontSize(8.5);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(200, 215, 230);
-  doc.text("Quick Commerce · Franchise · Technology", margin + 34, 30);
+  doc.text("Brands: Zaply · Nutize · SastaDukan · eDigicom", margin, 24);
+  doc.text("14, Dhakuria Kalibari Lane, Ground Floor, Kolkata - 700 031, WB", margin, 30);
+  doc.text("Email: hr@nutize.co.in", margin, 36);
 
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
