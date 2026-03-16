@@ -92,6 +92,22 @@ export default function OfferLetter() {
                       </FormItem>
                     )} />
 
+                    <FormField control={form.control} name="candidateAddress" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Candidate Address</FormLabel>
+                        <FormControl><Textarea placeholder="Full address of the candidate" rows={2} {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="candidateEmail" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Candidate Email</FormLabel>
+                        <FormControl><Input type="email" placeholder="candidate@example.com" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
                     <FormField control={form.control} name="dateOfJoining" render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>Date of Joining</FormLabel>

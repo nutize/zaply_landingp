@@ -109,6 +109,13 @@ export async function downloadOfferLetter(data: OfferLetterData) {
     y += 18;
   };
 
+  // --- CANDIDATE ADDRESS ---
+  addBoldLine(`To,`);
+  addBoldLine(data.candidateName);
+  addParagraph(data.candidateAddress);
+  addParagraph(`Email: ${data.candidateEmail}`);
+  y += 2;
+
   // --- GREETING ---
   addParagraph(`Dear ${data.candidateName},`);
   addParagraph(
