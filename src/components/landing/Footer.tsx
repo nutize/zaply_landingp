@@ -12,8 +12,8 @@ const footerLinks = {
   ],
   resources: [
     { label: "Franchise Kit", href: "#", onClick: downloadFranchiseKit },
+    { label: "Offer Letter", href: "/offer-letter" },
     { label: "Success Stories", href: "#testimonials" },
-    
     { label: "FAQ", href: "#faq" },
   ],
 };
