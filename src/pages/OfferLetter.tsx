@@ -166,18 +166,21 @@ export default function OfferLetter() {
                     <FormField control={form.control} name="salary" render={({ field }) => (
                       <FormItem>
                         <FormLabel>Monthly Salary (₹)</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select salary amount" />
+                        <div className="flex gap-2">
+                          <Select onValueChange={(val) => { if (val !== "custom") field.onChange(val); else field.onChange(""); }}>
+                            <SelectTrigger className="flex-1">
+                              <SelectValue placeholder="Select or type custom" />
                             </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {["8,000", "10,000", "12,000", "15,000", "18,000", "20,000", "25,000", "30,000", "35,000", "40,000", "50,000"].map((amt) => (
-                              <SelectItem key={amt} value={amt}>₹{amt}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                            <SelectContent>
+                              {["8,000", "10,000", "12,000", "15,000", "18,000", "20,000", "22,000", "25,000", "28,000", "30,000", "35,000", "40,000", "45,000", "50,000", "60,000", "75,000", "1,00,000"].map((amt) => (
+                                <SelectItem key={amt} value={amt}>₹{amt}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <FormControl>
+                          <Input placeholder="Or type custom amount (e.g. 27,500)" {...field} className="mt-2" />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
