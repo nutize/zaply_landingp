@@ -118,6 +118,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   addParagraph(data.candidateAddress);
   addParagraph(`Email: ${data.candidateEmail}`);
   y += 2;
+  const posConfig = POSITIONS[data.position] || POSITIONS["digital-marketing-manager"];
 
   // --- GREETING ---
   addParagraph(`Dear ${data.candidateName},`);
@@ -129,8 +130,6 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   // --- POSITION DETAILS ---
   y += 2;
   addSectionBar("Position Details");
-
-  const posConfig = POSITIONS[data.position] || POSITIONS["digital-marketing-manager"];
 
   addKeyValue("Designation:", posConfig.designation);
   addKeyValue("Department:", posConfig.department);
