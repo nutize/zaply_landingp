@@ -1,18 +1,44 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Download, CheckCircle, Briefcase, ArrowLeft } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { format } from "date-fns";
+import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon } from "lucide-react";
 import { downloadOfferLetter } from "@/lib/downloadOfferLetter";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 import zaplyLogo from "@/assets/zaply-logo.jpg";
+
+const formSchema = z.object({
+  candidateName: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
+  salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 export default function OfferLetter() {
   const [downloading, setDownloading] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
 
-  const handleDownload = async () => {
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { candidateName: "", salary: "20,000" },
+  });
+
+  const onSubmit = async (data: FormData) => {
     setDownloading(true);
-    await downloadOfferLetter();
+    await downloadOfferLetter({
+      candidateName: data.candidateName,
+      dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
+      salary: data.salary,
+    });
     setDownloading(false);
     setDownloaded(true);
   };
@@ -37,31 +63,90 @@ export default function OfferLetter() {
           className="max-w-lg w-full"
         >
           <Card className="shadow-elevated border-0">
-            <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-6">
-                <Briefcase className="w-8 h-8 text-accent" />
+            <CardContent className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
+                  <Briefcase className="w-6 h-6 text-accent" />
+                </div>
+                <div>
+                  <h1 className="font-heading text-xl font-bold text-foreground">
+                    Job Offer Letter
+                  </h1>
+                  <p className="text-muted-foreground text-sm">Digital Marketing Manager</p>
+                </div>
               </div>
-              <h1 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-2">
-                Job Offer Letter
-              </h1>
-              <p className="text-muted-foreground mb-1 text-lg font-semibold">Digital Marketing Manager</p>
-              <p className="text-muted-foreground text-sm mb-8">
-                Download the official offer letter with position details, responsibilities, compensation, and terms.
-              </p>
 
               {!downloaded ? (
-                <Button variant="hero" size="lg" className="gap-2" onClick={handleDownload} disabled={downloading}>
-                  <Download className="w-5 h-5" />
-                  {downloading ? "Generating..." : "Download Offer Letter"}
-                </Button>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField control={form.control} name="candidateName" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Candidate Name</FormLabel>
+                        <FormControl><Input placeholder="Full name of the candidate" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="dateOfJoining" render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Date of Joining</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              initialFocus
+                              className={cn("p-3 pointer-events-auto")}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="salary" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Monthly Salary (₹)</FormLabel>
+                        <FormControl><Input placeholder="e.g. 20,000" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <Button type="submit" variant="hero" size="lg" className="w-full gap-2 mt-2" disabled={downloading}>
+                      <Download className="w-5 h-5" />
+                      {downloading ? "Generating PDF..." : "Generate & Download"}
+                    </Button>
+                  </form>
+                </Form>
               ) : (
-                <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-                  <CheckCircle className="w-12 h-12 text-accent mx-auto mb-3" />
-                  <p className="text-foreground font-semibold mb-4">Downloaded successfully!</p>
-                  <Button variant="hero" size="lg" className="gap-2" onClick={handleDownload}>
-                    <Download className="w-5 h-5" />
-                    Download Again
-                  </Button>
+                <motion.div className="text-center py-6" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                  <CheckCircle className="w-14 h-14 text-accent mx-auto mb-3" />
+                  <p className="text-foreground font-semibold mb-1">Offer letter downloaded!</p>
+                  <p className="text-muted-foreground text-sm mb-6">Check your downloads folder.</p>
+                  <div className="flex gap-3 justify-center">
+                    <Button variant="outline" onClick={() => { setDownloaded(false); form.reset(); }}>
+                      New Letter
+                    </Button>
+                    <Button variant="hero" className="gap-2" onClick={() => form.handleSubmit(onSubmit)()}>
+                      <Download className="w-4 h-4" />
+                      Download Again
+                    </Button>
+                  </div>
                 </motion.div>
               )}
             </CardContent>

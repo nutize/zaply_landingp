@@ -15,7 +15,13 @@ const loadImage = (src: string): Promise<string> =>
     img.src = src;
   });
 
-export async function downloadOfferLetter() {
+export interface OfferLetterData {
+  candidateName: string;
+  dateOfJoining: string;
+  salary: string;
+}
+
+export async function downloadOfferLetter(data: OfferLetterData) {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
@@ -44,7 +50,6 @@ export async function downloadOfferLetter() {
   doc.setTextColor(200, 215, 230);
   doc.text("Quick Commerce · Franchise · Technology", margin + 34, 30);
 
-  // Right side — date
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
   doc.setFontSize(10);
@@ -106,8 +111,19 @@ export async function downloadOfferLetter() {
     y += lines.length * 5.5 + 3;
   };
 
+  const addSectionBar = (title: string) => {
+    if (y > pageHeight - 40) { doc.addPage(); y = 30; }
+    doc.setFillColor(orange.r, orange.g, orange.b);
+    doc.roundedRect(margin, y - 4, 4, 14, 2, 2, "F");
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(navy.r, navy.g, navy.b);
+    doc.text(title, margin + 10, y + 5);
+    y += 18;
+  };
+
   // --- GREETING ---
-  addParagraph("Dear Candidate,");
+  addParagraph(`Dear ${data.candidateName},`);
   addParagraph(
     "We are pleased to extend this offer of employment to you for the position of Digital Marketing Manager at Zaply. " +
     "We were impressed with your skills and experience, and we believe you will be a valuable addition to our team."
@@ -115,31 +131,20 @@ export async function downloadOfferLetter() {
 
   // --- POSITION DETAILS ---
   y += 2;
-  doc.setFillColor(orange.r, orange.g, orange.b);
-  doc.roundedRect(margin, y - 4, 4, 14, 2, 2, "F");
-  doc.setFontSize(13);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(navy.r, navy.g, navy.b);
-  doc.text("Position Details", margin + 10, y + 5);
-  y += 18;
+  addSectionBar("Position Details");
 
   addKeyValue("Designation:", "Digital Marketing Manager");
   addKeyValue("Department:", "Marketing & Business Development");
   addKeyValue("Reporting To:", "Founder / Head of Operations");
+  addKeyValue("Date of Joining:", data.dateOfJoining);
   addKeyValue("Location:", "As assigned by the Company");
   addKeyValue("Probation Period:", "2 Months from the date of joining");
 
   // --- SALARY ---
   y += 6;
-  doc.setFillColor(orange.r, orange.g, orange.b);
-  doc.roundedRect(margin, y - 4, 4, 14, 2, 2, "F");
-  doc.setFontSize(13);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(navy.r, navy.g, navy.b);
-  doc.text("Compensation & Benefits", margin + 10, y + 5);
-  y += 18;
+  addSectionBar("Compensation & Benefits");
 
-  addKeyValue("Monthly Salary:", "₹20,000/- (Twenty Thousand Rupees Only)");
+  addKeyValue("Monthly Salary:", `₹${data.salary}/- (Rupees ${data.salary} Only)`);
   addParagraph(
     "Upon successful completion of the probation period, you will be eligible for the following additional benefits:"
   );
@@ -149,13 +154,7 @@ export async function downloadOfferLetter() {
 
   // --- JOB RESPONSIBILITIES ---
   y += 4;
-  doc.setFillColor(orange.r, orange.g, orange.b);
-  doc.roundedRect(margin, y - 4, 4, 14, 2, 2, "F");
-  doc.setFontSize(13);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(navy.r, navy.g, navy.b);
-  doc.text("Key Responsibilities", margin + 10, y + 5);
-  y += 18;
+  addSectionBar("Key Responsibilities");
 
   const responsibilities = [
     "Social Media Management — strategy, content creation, scheduling, and engagement across all platforms (Instagram, Facebook, LinkedIn, X, etc.)",
@@ -172,14 +171,7 @@ export async function downloadOfferLetter() {
 
   // --- TERMS ---
   y += 4;
-  if (y > pageHeight - 60) { doc.addPage(); y = 30; }
-  doc.setFillColor(orange.r, orange.g, orange.b);
-  doc.roundedRect(margin, y - 4, 4, 14, 2, 2, "F");
-  doc.setFontSize(13);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(navy.r, navy.g, navy.b);
-  doc.text("General Terms", margin + 10, y + 5);
-  y += 18;
+  addSectionBar("General Terms");
 
   addBullet("This offer is subject to verification of your documents and background check.");
   addBullet("During the probation period, either party may terminate the employment with 15 days' written notice.");
@@ -209,7 +201,7 @@ export async function downloadOfferLetter() {
   if (y > pageHeight - 50) { doc.addPage(); y = 30; }
   addBoldLine("Acceptance by Candidate:");
   y += 8;
-  addKeyValue("Name:", "_______________________________");
+  addKeyValue("Name:", data.candidateName);
   addKeyValue("Signature:", "_______________________________");
   addKeyValue("Date:", "_______________________________");
 
@@ -228,5 +220,5 @@ export async function downloadOfferLetter() {
     addFooter(doc);
   }
 
-  doc.save("Zaply-Offer-Letter-Digital-Marketing-Manager.pdf");
+  doc.save(`Zaply-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`);
 }
