@@ -166,7 +166,18 @@ export default function OfferLetter() {
                     <FormField control={form.control} name="salary" render={({ field }) => (
                       <FormItem>
                         <FormLabel>Monthly Salary (₹)</FormLabel>
-                        <FormControl><Input placeholder="e.g. 20,000" {...field} /></FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select salary amount" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {["8,000", "10,000", "12,000", "15,000", "18,000", "20,000", "25,000", "30,000", "35,000", "40,000", "50,000"].map((amt) => (
+                              <SelectItem key={amt} value={amt}>₹{amt}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )} />
