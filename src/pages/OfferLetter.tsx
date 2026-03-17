@@ -23,6 +23,7 @@ const formSchema = z.object({
   candidateName: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   candidateAddress: z.string().trim().min(5, "Please enter the candidate's address").max(300),
   candidateEmail: z.string().trim().email("Please enter a valid email address"),
+  company: z.string().min(1, "Please select a company"),
   position: z.string().min(1, "Please select a position"),
   dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
   salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
