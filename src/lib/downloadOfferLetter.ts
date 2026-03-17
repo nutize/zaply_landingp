@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 
-
 import { POSITIONS } from "./positionConfig";
+import { COMPANIES, type CompanyConfig } from "./companyConfig";
 
 export interface OfferLetterData {
   candidateName: string;
@@ -10,6 +10,7 @@ export interface OfferLetterData {
   dateOfJoining: string;
   salary: string;
   position: string;
+  company: string;
 }
 
 export async function downloadOfferLetter(data: OfferLetterData) {
