@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon } from "lucide-react";
 import { downloadOfferLetter } from "@/lib/downloadOfferLetter";
 import { POSITION_OPTIONS } from "@/lib/positionConfig";
+import { COMPANY_OPTIONS } from "@/lib/companyConfig";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
