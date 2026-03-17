@@ -172,7 +172,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 6;
   if (y > pageHeight - 70) { doc.addPage(); y = 30; }
   addParagraph(
-    "We are excited to welcome you to the Zaply.Apps Webtech LLP family and look forward to a mutually rewarding association. " +
+    `We are excited to welcome you to the ${comp.name} family and look forward to a mutually rewarding association. ` +
     "Please sign and return a copy of this letter as acceptance of this offer."
   );
 
