@@ -179,10 +179,10 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 6;
   addParagraph("Warm Regards,");
   y += 2;
-  addBoldLine("For Zaply.Apps Webtech LLP");
+  addBoldLine(`For ${comp.name}`);
   y += 4;
-  addBoldLine("K R Ghosh");
-  addParagraph("Authorized Signatory");
+  addBoldLine(comp.signatory);
+  addParagraph(comp.signatoryTitle);
   y += 4;
   doc.setFontSize(9);
   doc.setFont("helvetica", "italic");
