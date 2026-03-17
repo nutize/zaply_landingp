@@ -197,7 +197,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
     pg.rect(0, pageHeight - 12, pageWidth, 12, "F");
     pg.setFontSize(7.5);
     pg.setTextColor(200, 210, 220);
-    pg.text("© 2026 Zaply.Apps Webtech LLP  •  hr@nutize.co.in  •  Confidential", pageWidth / 2, pageHeight - 4, { align: "center" });
+    pg.text(comp.footerText, pageWidth / 2, pageHeight - 4, { align: "center" });
   };
 
   const totalPages = doc.getNumberOfPages();
