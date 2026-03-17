@@ -206,5 +206,5 @@ export async function downloadOfferLetter(data: OfferLetterData) {
     addFooter(doc);
   }
 
-  doc.save(`Zaply-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`);
+  doc.save(`${comp.name.replace(/[\s.]+/g, "-")}-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`);
 }
