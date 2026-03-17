@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon } from "lucide-react";
 import { downloadOfferLetter } from "@/lib/downloadOfferLetter";
 import { POSITION_OPTIONS } from "@/lib/positionConfig";
+import { COMPANY_OPTIONS } from "@/lib/companyConfig";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,6 +23,7 @@ const formSchema = z.object({
   candidateName: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   candidateAddress: z.string().trim().min(5, "Please enter the candidate's address").max(300),
   candidateEmail: z.string().trim().email("Please enter a valid email address"),
+  company: z.string().min(1, "Please select a company"),
   position: z.string().min(1, "Please select a position"),
   dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
   salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
@@ -35,7 +37,7 @@ export default function OfferLetter() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", position: "", salary: "20,000" },
+    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000" },
   });
 
   const onSubmit = async (data: FormData) => {
@@ -44,6 +46,7 @@ export default function OfferLetter() {
       candidateName: data.candidateName,
       candidateAddress: data.candidateAddress,
       candidateEmail: data.candidateEmail,
+      company: data.company,
       position: data.position,
       dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
       salary: data.salary,
@@ -108,6 +111,25 @@ export default function OfferLetter() {
                       <FormItem>
                         <FormLabel>Candidate Email</FormLabel>
                         <FormControl><Input type="email" placeholder="candidate@example.com" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="company" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a company" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {COMPANY_OPTIONS.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )} />

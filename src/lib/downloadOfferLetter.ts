@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 
-
 import { POSITIONS } from "./positionConfig";
+import { COMPANIES, type CompanyConfig } from "./companyConfig";
 
 export interface OfferLetterData {
   candidateName: string;
@@ -10,6 +10,7 @@ export interface OfferLetterData {
   dateOfJoining: string;
   salary: string;
   position: string;
+  company: string;
 }
 
 export async function downloadOfferLetter(data: OfferLetterData) {
@@ -19,8 +20,9 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   const margin = 20;
   const contentWidth = pageWidth - margin * 2;
 
-  const orange = { r: 230, g: 140, b: 20 };
-  const navy = { r: 35, g: 55, b: 80 };
+  const comp: CompanyConfig = COMPANIES[data.company] || COMPANIES["zaply"];
+  const navy = comp.colors.primary;
+  const orange = comp.colors.accent;
   const gray = { r: 80, g: 90, b: 100 };
   const white = { r: 255, g: 255, b: 255 };
 
@@ -32,13 +34,13 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(white.r, white.g, white.b);
-  doc.text("Zaply.Apps Webtech LLP", margin, 16);
+  doc.text(comp.name, margin, 16);
   doc.setFontSize(8.5);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(200, 215, 230);
-  doc.text("Brands: Zaply · Nutize · SastaDukan · eDigicom", margin, 24);
-  doc.text("14, Dhakuria Kalibari Lane, Ground Floor, Kolkata - 700 031, WB", margin, 30);
-  doc.text("Email: hr@nutize.co.in", margin, 36);
+  doc.text(comp.tagline, margin, 24);
+  doc.text(comp.address, margin, 30);
+  doc.text(`Email: ${comp.email}`, margin, 36);
 
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
@@ -123,7 +125,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   // --- GREETING ---
   addParagraph(`Dear ${data.candidateName},`);
   addParagraph(
-    `We are pleased to extend this offer of employment to you for the position of ${posConfig.designation} at Zaply.Apps Webtech LLP. ` +
+    `We are pleased to extend this offer of employment to you for the position of ${posConfig.designation} at ${comp.name}. ` +
     "We were impressed with your skills and experience, and we believe you will be a valuable addition to our team."
   );
 
@@ -170,17 +172,17 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 6;
   if (y > pageHeight - 70) { doc.addPage(); y = 30; }
   addParagraph(
-    "We are excited to welcome you to the Zaply.Apps Webtech LLP family and look forward to a mutually rewarding association. " +
+    `We are excited to welcome you to the ${comp.name} family and look forward to a mutually rewarding association. ` +
     "Please sign and return a copy of this letter as acceptance of this offer."
   );
 
   y += 6;
   addParagraph("Warm Regards,");
   y += 2;
-  addBoldLine("For Zaply.Apps Webtech LLP");
+  addBoldLine(`For ${comp.name}`);
   y += 4;
-  addBoldLine("K R Ghosh");
-  addParagraph("Authorized Signatory");
+  addBoldLine(comp.signatory);
+  addParagraph(comp.signatoryTitle);
   y += 4;
   doc.setFontSize(9);
   doc.setFont("helvetica", "italic");
@@ -195,7 +197,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
     pg.rect(0, pageHeight - 12, pageWidth, 12, "F");
     pg.setFontSize(7.5);
     pg.setTextColor(200, 210, 220);
-    pg.text("© 2026 Zaply.Apps Webtech LLP  •  hr@nutize.co.in  •  Confidential", pageWidth / 2, pageHeight - 4, { align: "center" });
+    pg.text(comp.footerText, pageWidth / 2, pageHeight - 4, { align: "center" });
   };
 
   const totalPages = doc.getNumberOfPages();
@@ -204,5 +206,5 @@ export async function downloadOfferLetter(data: OfferLetterData) {
     addFooter(doc);
   }
 
-  doc.save(`Zaply-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`);
+  doc.save(`${comp.name.replace(/[\s.]+/g, "-")}-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`);
 }
