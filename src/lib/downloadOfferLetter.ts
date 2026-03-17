@@ -20,8 +20,9 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   const margin = 20;
   const contentWidth = pageWidth - margin * 2;
 
-  const orange = { r: 230, g: 140, b: 20 };
-  const navy = { r: 35, g: 55, b: 80 };
+  const comp: CompanyConfig = COMPANIES[data.company] || COMPANIES["zaply"];
+  const navy = comp.colors.primary;
+  const orange = comp.colors.accent;
   const gray = { r: 80, g: 90, b: 100 };
   const white = { r: 255, g: 255, b: 255 };
 
@@ -33,13 +34,13 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(white.r, white.g, white.b);
-  doc.text("Zaply.Apps Webtech LLP", margin, 16);
+  doc.text(comp.name, margin, 16);
   doc.setFontSize(8.5);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(200, 215, 230);
-  doc.text("Brands: Zaply · Nutize · SastaDukan · eDigicom", margin, 24);
-  doc.text("14, Dhakuria Kalibari Lane, Ground Floor, Kolkata - 700 031, WB", margin, 30);
-  doc.text("Email: hr@nutize.co.in", margin, 36);
+  doc.text(comp.tagline, margin, 24);
+  doc.text(comp.address, margin, 30);
+  doc.text(`Email: ${comp.email}`, margin, 36);
 
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
