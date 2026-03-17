@@ -115,6 +115,25 @@ export default function OfferLetter() {
                       </FormItem>
                     )} />
 
+                    <FormField control={form.control} name="company" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a company" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {COMPANY_OPTIONS.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
                     <FormField control={form.control} name="position" render={({ field }) => (
                       <FormItem>
                         <FormLabel>Position / Designation</FormLabel>
