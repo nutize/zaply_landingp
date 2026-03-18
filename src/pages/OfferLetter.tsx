@@ -28,6 +28,8 @@ const formSchema = z.object({
   letterDate: z.date({ required_error: "Please select the letter issue date" }),
   dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
   salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
+  probationPeriod: z.string().min(1, "Please select probation period"),
+  salaryIncrement: z.string().trim().min(1, "Please enter the increment amount").max(20),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -38,7 +40,7 @@ export default function OfferLetter() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000", letterDate: new Date() },
+    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000", probationPeriod: "2", salaryIncrement: "2,000", letterDate: new Date() },
   });
 
   const onSubmit = async (data: FormData) => {
@@ -52,6 +54,8 @@ export default function OfferLetter() {
       letterDate: format(data.letterDate, "dd MMMM yyyy"),
       dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
       salary: data.salary,
+      probationPeriod: data.probationPeriod,
+      salaryIncrement: data.salaryIncrement,
     });
     setDownloading(false);
     setDownloaded(true);
@@ -236,6 +240,47 @@ export default function OfferLetter() {
                         </div>
                         <FormControl>
                           <Input placeholder="Or type custom amount (e.g. 27,500)" {...field} className="mt-2" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="probationPeriod" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Probation Period</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select probation period" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {["1", "2", "3", "4", "5", "6"].map((m) => (
+                              <SelectItem key={m} value={m}>{m} {Number(m) === 1 ? "Month" : "Months"}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="salaryIncrement" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Salary Increment after Probation (₹)</FormLabel>
+                        <div className="flex gap-2">
+                          <Select onValueChange={(val) => { if (val !== "custom") field.onChange(val); else field.onChange(""); }}>
+                            <SelectTrigger className="flex-1">
+                              <SelectValue placeholder="Select increment amount" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["1,000", "1,500", "2,000", "2,500", "3,000", "4,000", "5,000", "7,500", "10,000", "15,000", "20,000"].map((amt) => (
+                                <SelectItem key={amt} value={amt}>₹{amt}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <FormControl>
+                          <Input placeholder="Or type custom amount (e.g. 3,500)" {...field} className="mt-2" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
