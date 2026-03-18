@@ -156,7 +156,15 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 4;
   addSectionBar("Key Responsibilities");
 
-  posConfig.responsibilities.forEach((r) => addBullet(r));
+  // --- WORKING HOURS ---
+  y += 4;
+  addSectionBar("Working Hours & Schedule");
+
+  addBullet("Reporting Time: All office employees (Head Office including Branches), other than Field Staff, must report before 10:30 AM.");
+  addBullet("Working Hours: 10:30 AM to 7:30 PM.");
+  addBullet("Lunch Break: 30 minutes.");
+  addBullet("Working Days: 6 days a week.");
+
 
   // --- TERMS ---
   y += 4;
