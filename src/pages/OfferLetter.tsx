@@ -49,6 +49,7 @@ export default function OfferLetter() {
       candidateEmail: data.candidateEmail,
       company: data.company,
       position: data.position,
+      letterDate: format(data.letterDate, "dd MMMM yyyy"),
       dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
       salary: data.salary,
     });
