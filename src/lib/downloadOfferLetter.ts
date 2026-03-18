@@ -140,7 +140,8 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   addKeyValue("Reporting To:", posConfig.reportingTo);
   addKeyValue("Date of Joining:", data.dateOfJoining);
   addKeyValue("Location:", "As assigned by the Company");
-  addKeyValue("Probation Period:", "2 Months from the date of joining");
+  const probationLabel = Number(data.probationPeriod) === 1 ? "1 Month" : `${data.probationPeriod} Months`;
+  addKeyValue("Probation Period:", `${probationLabel} from the date of joining`);
 
   // --- SALARY ---
   y += 6;
