@@ -54,6 +54,8 @@ export default function OfferLetter() {
       letterDate: format(data.letterDate, "dd MMMM yyyy"),
       dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
       salary: data.salary,
+      probationPeriod: data.probationPeriod,
+      salaryIncrement: data.salaryIncrement,
     });
     setDownloading(false);
     setDownloaded(true);
