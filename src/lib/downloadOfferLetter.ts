@@ -240,5 +240,15 @@ export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
     drawFooter();
   }
 
-  doc.save(`${comp.name.replace(/[\s.]+/g, "-")}-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`);
+  return doc;
+}
+
+export function getOfferLetterFileName(data: OfferLetterData): string {
+  const comp: CompanyConfig = COMPANIES[data.company] || COMPANIES["zaply"];
+  return `${comp.name.replace(/[\s.]+/g, "-")}-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`;
+}
+
+export async function downloadOfferLetter(data: OfferLetterData) {
+  const doc = generateOfferLetterPDF(data);
+  doc.save(getOfferLetterFileName(data));
 }
