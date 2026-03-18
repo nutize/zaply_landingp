@@ -12,6 +12,8 @@ export interface OfferLetterData {
   salary: string;
   position: string;
   company: string;
+  probationPeriod: string;
+  salaryIncrement: string;
 }
 
 export async function downloadOfferLetter(data: OfferLetterData) {
