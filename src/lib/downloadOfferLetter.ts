@@ -7,6 +7,7 @@ export interface OfferLetterData {
   candidateName: string;
   candidateAddress: string;
   candidateEmail: string;
+  letterDate: string;
   dateOfJoining: string;
   salary: string;
   position: string;
@@ -42,8 +43,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   doc.text(comp.address, margin, 30);
   doc.text(`Email: ${comp.email}`, margin, 36);
 
-  const today = new Date();
-  const dateStr = today.toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
+  const dateStr = data.letterDate;
   doc.setFontSize(10);
   doc.setTextColor(200, 215, 230);
   doc.text(`Date: ${dateStr}`, pageWidth - margin, 16, { align: "right" });

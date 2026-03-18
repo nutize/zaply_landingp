@@ -25,6 +25,7 @@ const formSchema = z.object({
   candidateEmail: z.string().trim().email("Please enter a valid email address"),
   company: z.string().min(1, "Please select a company"),
   position: z.string().min(1, "Please select a position"),
+  letterDate: z.date({ required_error: "Please select the letter issue date" }),
   dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
   salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
 });
@@ -37,7 +38,7 @@ export default function OfferLetter() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000" },
+    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000", letterDate: new Date() },
   });
 
   const onSubmit = async (data: FormData) => {
@@ -48,6 +49,7 @@ export default function OfferLetter() {
       candidateEmail: data.candidateEmail,
       company: data.company,
       position: data.position,
+      letterDate: format(data.letterDate, "dd MMMM yyyy"),
       dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
       salary: data.salary,
     });
@@ -111,6 +113,38 @@ export default function OfferLetter() {
                       <FormItem>
                         <FormLabel>Candidate Email</FormLabel>
                         <FormControl><Input type="email" placeholder="candidate@example.com" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="letterDate" render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Letter Issue Date</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              initialFocus
+                              className={cn("p-3 pointer-events-auto")}
+                            />
+                          </PopoverContent>
+                        </Popover>
                         <FormMessage />
                       </FormItem>
                     )} />
