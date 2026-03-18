@@ -100,7 +100,7 @@ export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
   const addKeyValue = (key: string, value: string) => {
     doc.setFontSize(10.5);
     const keyWidth = 58;
-    const valueWidth = contentWidth - keyWidth - 8;
+    const valueWidth = contentWidth - keyWidth - 14;
     doc.setFont("helvetica", "normal");
     const valueLines: string[] = doc.splitTextToSize(value, valueWidth);
     const lineHeight = 5.5;
