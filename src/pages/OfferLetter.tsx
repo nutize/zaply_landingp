@@ -47,22 +47,42 @@ export default function OfferLetter() {
     defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000", probationPeriod: "2", salaryIncrement: "2,000", letterDate: new Date() },
   });
 
+  const buildFormData = useCallback((data: FormData) => ({
+    candidateName: data.candidateName,
+    candidateAddress: data.candidateAddress,
+    candidateEmail: data.candidateEmail,
+    company: data.company,
+    position: data.position,
+    letterDate: format(data.letterDate, "dd MMMM yyyy"),
+    dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
+    salary: data.salary,
+    probationPeriod: data.probationPeriod,
+    salaryIncrement: data.salaryIncrement,
+  }), []);
+
   const onSubmit = async (data: FormData) => {
     setDownloading(true);
-    await downloadOfferLetter({
-      candidateName: data.candidateName,
-      candidateAddress: data.candidateAddress,
-      candidateEmail: data.candidateEmail,
-      company: data.company,
-      position: data.position,
-      letterDate: format(data.letterDate, "dd MMMM yyyy"),
-      dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
-      salary: data.salary,
-      probationPeriod: data.probationPeriod,
-      salaryIncrement: data.salaryIncrement,
-    });
+    await downloadOfferLetter(buildFormData(data));
     setDownloading(false);
     setDownloaded(true);
+  };
+
+  const onPreview = (data: FormData) => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    const formData = buildFormData(data);
+    const doc = generateOfferLetterPDF(formData);
+    const blob = doc.output("blob");
+    setPreviewUrl(URL.createObjectURL(blob));
+    setPreviewFileName(getOfferLetterFileName(formData));
+    setPreviewOpen(true);
+  };
+
+  const handleDownloadFromPreview = () => {
+    if (!previewUrl) return;
+    const a = document.createElement("a");
+    a.href = previewUrl;
+    a.download = previewFileName;
+    a.click();
   };
 
   return (
