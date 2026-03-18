@@ -310,10 +310,22 @@ export default function OfferLetter() {
                       </FormItem>
                     )} />
 
-                    <Button type="submit" variant="hero" size="lg" className="w-full gap-2 mt-2" disabled={downloading}>
-                      <Download className="w-5 h-5" />
-                      {downloading ? "Generating PDF..." : "Generate & Download"}
-                    </Button>
+                    <div className="flex gap-3 mt-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="lg"
+                        className="flex-1 gap-2"
+                        onClick={form.handleSubmit(onPreview)}
+                      >
+                        <Eye className="w-5 h-5" />
+                        Preview
+                      </Button>
+                      <Button type="submit" variant="hero" size="lg" className="flex-1 gap-2" disabled={downloading}>
+                        <Download className="w-5 h-5" />
+                        {downloading ? "Generating..." : "Download"}
+                      </Button>
+                    </div>
                   </form>
                 </Form>
               ) : (
@@ -336,6 +348,29 @@ export default function OfferLetter() {
           </Card>
         </motion.div>
       </main>
+
+      <Dialog open={previewOpen} onOpenChange={(open) => { setPreviewOpen(open); if (!open && previewUrl) { URL.revokeObjectURL(previewUrl); setPreviewUrl(null); } }}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[90vh] flex flex-col p-0">
+          <DialogHeader className="px-6 pt-6 pb-2 flex-shrink-0">
+            <DialogTitle className="flex items-center justify-between">
+              <span>Offer Letter Preview</span>
+              <Button variant="hero" size="sm" className="gap-2" onClick={handleDownloadFromPreview}>
+                <Download className="w-4 h-4" />
+                Download PDF
+              </Button>
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 px-6 pb-6 min-h-0">
+            {previewUrl && (
+              <iframe
+                src={previewUrl}
+                className="w-full h-full rounded-lg border border-border"
+                title="PDF Preview"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
