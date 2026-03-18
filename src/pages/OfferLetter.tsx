@@ -38,6 +38,9 @@ type FormData = z.infer<typeof formSchema>;
 export default function OfferLetter() {
   const [downloading, setDownloading] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewFileName, setPreviewFileName] = useState("");
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
