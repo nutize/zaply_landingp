@@ -16,7 +16,7 @@ export interface OfferLetterData {
   salaryIncrement: string;
 }
 
-export async function downloadOfferLetter(data: OfferLetterData) {
+export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
