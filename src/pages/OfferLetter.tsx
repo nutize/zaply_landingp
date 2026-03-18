@@ -25,6 +25,7 @@ const formSchema = z.object({
   candidateEmail: z.string().trim().email("Please enter a valid email address"),
   company: z.string().min(1, "Please select a company"),
   position: z.string().min(1, "Please select a position"),
+  letterDate: z.date({ required_error: "Please select the letter issue date" }),
   dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
   salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
 });
