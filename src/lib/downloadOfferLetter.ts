@@ -148,8 +148,9 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   addSectionBar("Compensation & Benefits");
 
   addKeyValue("Monthly Salary:", `₹${data.salary}/- (Rupees ${data.salary} Only)`);
+  addKeyValue("Increment on Probation:", `₹${data.salaryIncrement}/- per month upon successful completion of probation`);
   addParagraph(
-    "Upon successful completion of the probation period, you will be eligible for the following additional benefits:"
+    `Upon successful completion of the ${probationLabel} probation period, your monthly salary will be revised to ₹${data.salary} + ₹${data.salaryIncrement}. Additionally, you will be eligible for the following benefits:`
   );
   addBullet("Group Insurance Coverage");
   addBullet("Performance-based Incentives");

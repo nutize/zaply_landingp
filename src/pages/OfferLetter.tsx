@@ -245,6 +245,47 @@ export default function OfferLetter() {
                       </FormItem>
                     )} />
 
+                    <FormField control={form.control} name="probationPeriod" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Probation Period</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select probation period" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {["1", "2", "3", "4", "5", "6"].map((m) => (
+                              <SelectItem key={m} value={m}>{m} {Number(m) === 1 ? "Month" : "Months"}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
+                    <FormField control={form.control} name="salaryIncrement" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Salary Increment after Probation (₹)</FormLabel>
+                        <div className="flex gap-2">
+                          <Select onValueChange={(val) => { if (val !== "custom") field.onChange(val); else field.onChange(""); }}>
+                            <SelectTrigger className="flex-1">
+                              <SelectValue placeholder="Select increment amount" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["1,000", "1,500", "2,000", "2,500", "3,000", "4,000", "5,000", "7,500", "10,000", "15,000", "20,000"].map((amt) => (
+                                <SelectItem key={amt} value={amt}>₹{amt}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <FormControl>
+                          <Input placeholder="Or type custom amount (e.g. 3,500)" {...field} className="mt-2" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+
                     <Button type="submit" variant="hero" size="lg" className="w-full gap-2 mt-2" disabled={downloading}>
                       <Download className="w-5 h-5" />
                       {downloading ? "Generating PDF..." : "Generate & Download"}
