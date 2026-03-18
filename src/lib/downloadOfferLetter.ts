@@ -164,6 +164,7 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   addBullet("Working Hours: 10:30 AM to 7:30 PM.");
   addBullet("Lunch Break: 30 minutes.");
   addBullet("Working Days: 6 days a week.");
+  addBullet("Delayed Reporting Policy: Every 3 instances of delayed reporting will be counted as 1 day absent.");
 
 
   // --- TERMS ---
