@@ -78,10 +78,14 @@ export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
     doc.setFontSize(10.5);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(gray.r, gray.g, gray.b);
-    const lines = doc.splitTextToSize(text, contentWidth);
-    ensureSpace(lines.length * 5.5 + 4);
-    doc.text(lines, margin, y);
-    y += lines.length * 5.5 + 4;
+    const lines: string[] = doc.splitTextToSize(text, contentWidth);
+    const lineHeight = 5.5;
+    for (let i = 0; i < lines.length; i++) {
+      ensureSpace(lineHeight + 2);
+      doc.text(lines[i], margin, y);
+      y += lineHeight;
+    }
+    y += 4;
   };
 
   const addBoldLine = (text: string) => {
@@ -98,28 +102,40 @@ export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
     const keyWidth = 58;
     const valueWidth = contentWidth - keyWidth - 8;
     doc.setFont("helvetica", "normal");
-    const valueLines = doc.splitTextToSize(value, valueWidth);
-    const totalHeight = Math.max(7, valueLines.length * 5.5 + 2);
-    ensureSpace(totalHeight);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(navy.r, navy.g, navy.b);
-    doc.text(key, margin + 4, y);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(gray.r, gray.g, gray.b);
-    doc.text(valueLines, margin + 4 + keyWidth, y);
-    y += totalHeight;
+    const valueLines: string[] = doc.splitTextToSize(value, valueWidth);
+    const lineHeight = 5.5;
+    // Print line by line, keeping key on first line
+    for (let i = 0; i < valueLines.length; i++) {
+      ensureSpace(lineHeight + 2);
+      if (i === 0) {
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(navy.r, navy.g, navy.b);
+        doc.text(key, margin + 4, y);
+      }
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(gray.r, gray.g, gray.b);
+      doc.text(valueLines[i], margin + 4 + keyWidth, y);
+      y += lineHeight;
+    }
+    y += 2;
   };
 
   const addBullet = (text: string) => {
     doc.setFontSize(10.5);
     doc.setFont("helvetica", "normal");
-    const lines = doc.splitTextToSize(text, contentWidth - 14);
-    ensureSpace(lines.length * 5.5 + 3);
-    doc.setFillColor(orange.r, orange.g, orange.b);
-    doc.circle(margin + 5, y - 1.5, 1.5, "F");
-    doc.setTextColor(gray.r, gray.g, gray.b);
-    doc.text(lines, margin + 11, y);
-    y += lines.length * 5.5 + 3;
+    const lines: string[] = doc.splitTextToSize(text, contentWidth - 14);
+    const lineHeight = 5.5;
+    for (let i = 0; i < lines.length; i++) {
+      ensureSpace(lineHeight + 2);
+      if (i === 0) {
+        doc.setFillColor(orange.r, orange.g, orange.b);
+        doc.circle(margin + 5, y - 1.5, 1.5, "F");
+      }
+      doc.setTextColor(gray.r, gray.g, gray.b);
+      doc.text(lines[i], margin + 11, y);
+      y += lineHeight;
+    }
+    y += 3;
   };
 
   const addSectionBar = (title: string) => {
