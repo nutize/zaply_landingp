@@ -7,7 +7,7 @@ export interface PositionConfig {
 
 export const POSITIONS: Record<string, PositionConfig> = {
   "digital-marketing-manager": {
-    designation: "Digital Marketing Manager",
+    designation: "Digital Marketing cum Brand Promotion Manager",
     department: "Marketing & Business Development",
     reportingTo: "Founder / Head of Operations",
     responsibilities: [
