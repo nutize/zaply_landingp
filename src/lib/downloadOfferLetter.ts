@@ -7,6 +7,7 @@ export interface OfferLetterData {
   candidateName: string;
   candidateAddress: string;
   candidateEmail: string;
+  letterDate: string;
   dateOfJoining: string;
   salary: string;
   position: string;
