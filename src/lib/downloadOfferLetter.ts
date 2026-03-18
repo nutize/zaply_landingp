@@ -160,6 +160,10 @@ export async function downloadOfferLetter(data: OfferLetterData) {
   y += 4;
   addSectionBar("Key Responsibilities");
 
+  posConfig.responsibilities.forEach((resp) => {
+    addBullet(resp);
+  });
+
   // --- WORKING HOURS ---
   y += 4;
   addSectionBar("Working Hours & Schedule");
