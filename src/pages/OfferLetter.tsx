@@ -40,7 +40,7 @@ export default function OfferLetter() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000", letterDate: new Date() },
+    defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000", probationPeriod: "2", salaryIncrement: "2,000", letterDate: new Date() },
   });
 
   const onSubmit = async (data: FormData) => {
