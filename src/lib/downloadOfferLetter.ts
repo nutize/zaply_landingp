@@ -100,7 +100,7 @@ export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
   const addKeyValue = (key: string, value: string) => {
     doc.setFontSize(10.5);
     const keyWidth = 58;
-    const valueWidth = contentWidth - keyWidth - 8;
+    const valueWidth = contentWidth - keyWidth - 14;
     doc.setFont("helvetica", "normal");
     const valueLines: string[] = doc.splitTextToSize(value, valueWidth);
     const lineHeight = 5.5;
@@ -192,10 +192,10 @@ export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
   // --- SALARY ---
   y += 6;
   addSectionBar("Compensation & Benefits");
-  addKeyValue("Monthly Salary:", `₹${data.salary}/- (Rupees ${data.salary} Only)`);
-  addKeyValue("Increment on Probation:", `₹${data.salaryIncrement}/- per month upon successful completion of probation`);
+  addKeyValue("Monthly Salary:", `Rs. ${data.salary}/- (Rupees ${data.salary} Only)`);
+  addKeyValue("Increment on Probation:", `Rs. ${data.salaryIncrement}/- per month upon successful completion of probation`);
   addParagraph(
-    `Upon successful completion of the ${probationLabel} probation period, your monthly salary will be revised to ₹${data.salary} + ₹${data.salaryIncrement}. Additionally, you will be eligible for the following benefits:`
+    `Upon successful completion of the ${probationLabel} probation period, your monthly salary will be revised to Rs. ${data.salary} + Rs. ${data.salaryIncrement}. Additionally, you will be eligible for the following benefits:`
   );
   addBullet("Group Insurance Coverage");
   addBullet("Performance-based Incentives");
