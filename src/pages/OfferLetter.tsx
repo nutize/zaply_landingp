@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
-import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon } from "lucide-react";
-import { downloadOfferLetter } from "@/lib/downloadOfferLetter";
+import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon, Eye } from "lucide-react";
+import { downloadOfferLetter, generateOfferLetterPDF, getOfferLetterFileName } from "@/lib/downloadOfferLetter";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { POSITION_OPTIONS } from "@/lib/positionConfig";
 import { COMPANY_OPTIONS } from "@/lib/companyConfig";
 import { Button } from "@/components/ui/button";
