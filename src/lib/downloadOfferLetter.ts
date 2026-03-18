@@ -16,7 +16,7 @@ export interface OfferLetterData {
   salaryIncrement: string;
 }
 
-export async function downloadOfferLetter(data: OfferLetterData) {
+export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
@@ -240,5 +240,15 @@ export async function downloadOfferLetter(data: OfferLetterData) {
     drawFooter();
   }
 
-  doc.save(`${comp.name.replace(/[\s.]+/g, "-")}-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`);
+  return doc;
+}
+
+export function getOfferLetterFileName(data: OfferLetterData): string {
+  const comp: CompanyConfig = COMPANIES[data.company] || COMPANIES["zaply"];
+  return `${comp.name.replace(/[\s.]+/g, "-")}-Offer-Letter-${data.candidateName.replace(/\s+/g, "-")}.pdf`;
+}
+
+export async function downloadOfferLetter(data: OfferLetterData) {
+  const doc = generateOfferLetterPDF(data);
+  doc.save(getOfferLetterFileName(data));
 }

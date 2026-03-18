@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
-import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon } from "lucide-react";
-import { downloadOfferLetter } from "@/lib/downloadOfferLetter";
+import { Download, CheckCircle, Briefcase, ArrowLeft, CalendarIcon, Eye } from "lucide-react";
+import { downloadOfferLetter, generateOfferLetterPDF, getOfferLetterFileName } from "@/lib/downloadOfferLetter";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { POSITION_OPTIONS } from "@/lib/positionConfig";
 import { COMPANY_OPTIONS } from "@/lib/companyConfig";
 import { Button } from "@/components/ui/button";
@@ -37,28 +38,51 @@ type FormData = z.infer<typeof formSchema>;
 export default function OfferLetter() {
   const [downloading, setDownloading] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewFileName, setPreviewFileName] = useState("");
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { candidateName: "", candidateAddress: "", candidateEmail: "", company: "", position: "", salary: "20,000", probationPeriod: "2", salaryIncrement: "2,000", letterDate: new Date() },
   });
 
+  const buildFormData = useCallback((data: FormData) => ({
+    candidateName: data.candidateName,
+    candidateAddress: data.candidateAddress,
+    candidateEmail: data.candidateEmail,
+    company: data.company,
+    position: data.position,
+    letterDate: format(data.letterDate, "dd MMMM yyyy"),
+    dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
+    salary: data.salary,
+    probationPeriod: data.probationPeriod,
+    salaryIncrement: data.salaryIncrement,
+  }), []);
+
   const onSubmit = async (data: FormData) => {
     setDownloading(true);
-    await downloadOfferLetter({
-      candidateName: data.candidateName,
-      candidateAddress: data.candidateAddress,
-      candidateEmail: data.candidateEmail,
-      company: data.company,
-      position: data.position,
-      letterDate: format(data.letterDate, "dd MMMM yyyy"),
-      dateOfJoining: format(data.dateOfJoining, "dd MMMM yyyy"),
-      salary: data.salary,
-      probationPeriod: data.probationPeriod,
-      salaryIncrement: data.salaryIncrement,
-    });
+    await downloadOfferLetter(buildFormData(data));
     setDownloading(false);
     setDownloaded(true);
+  };
+
+  const onPreview = (data: FormData) => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    const formData = buildFormData(data);
+    const doc = generateOfferLetterPDF(formData);
+    const blob = doc.output("blob");
+    setPreviewUrl(URL.createObjectURL(blob));
+    setPreviewFileName(getOfferLetterFileName(formData));
+    setPreviewOpen(true);
+  };
+
+  const handleDownloadFromPreview = () => {
+    if (!previewUrl) return;
+    const a = document.createElement("a");
+    a.href = previewUrl;
+    a.download = previewFileName;
+    a.click();
   };
 
   return (
@@ -286,10 +310,22 @@ export default function OfferLetter() {
                       </FormItem>
                     )} />
 
-                    <Button type="submit" variant="hero" size="lg" className="w-full gap-2 mt-2" disabled={downloading}>
-                      <Download className="w-5 h-5" />
-                      {downloading ? "Generating PDF..." : "Generate & Download"}
-                    </Button>
+                    <div className="flex gap-3 mt-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="lg"
+                        className="flex-1 gap-2"
+                        onClick={form.handleSubmit(onPreview)}
+                      >
+                        <Eye className="w-5 h-5" />
+                        Preview
+                      </Button>
+                      <Button type="submit" variant="hero" size="lg" className="flex-1 gap-2" disabled={downloading}>
+                        <Download className="w-5 h-5" />
+                        {downloading ? "Generating..." : "Download"}
+                      </Button>
+                    </div>
                   </form>
                 </Form>
               ) : (
@@ -312,6 +348,29 @@ export default function OfferLetter() {
           </Card>
         </motion.div>
       </main>
+
+      <Dialog open={previewOpen} onOpenChange={(open) => { setPreviewOpen(open); if (!open && previewUrl) { URL.revokeObjectURL(previewUrl); setPreviewUrl(null); } }}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[90vh] flex flex-col p-0">
+          <DialogHeader className="px-6 pt-6 pb-2 flex-shrink-0">
+            <DialogTitle className="flex items-center justify-between">
+              <span>Offer Letter Preview</span>
+              <Button variant="hero" size="sm" className="gap-2" onClick={handleDownloadFromPreview}>
+                <Download className="w-4 h-4" />
+                Download PDF
+              </Button>
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 px-6 pb-6 min-h-0">
+            {previewUrl && (
+              <iframe
+                src={previewUrl}
+                className="w-full h-full rounded-lg border border-border"
+                title="PDF Preview"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
