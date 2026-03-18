@@ -28,6 +28,8 @@ const formSchema = z.object({
   letterDate: z.date({ required_error: "Please select the letter issue date" }),
   dateOfJoining: z.date({ required_error: "Please select a date of joining" }),
   salary: z.string().trim().min(1, "Please enter the salary amount").max(20),
+  probationPeriod: z.string().min(1, "Please select probation period"),
+  salaryIncrement: z.string().trim().min(1, "Please enter the increment amount").max(20),
 });
 
 type FormData = z.infer<typeof formSchema>;
