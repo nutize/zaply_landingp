@@ -23,7 +23,7 @@ export function generateOfferLetterPDF(data: OfferLetterData): jsPDF {
   const margin = 20;
   const contentWidth = pageWidth - margin * 2;
   const footerHeight = 16;
-  const bottomLimit = pageHeight - footerHeight - 15;
+  const bottomLimit = pageHeight - footerHeight - 20;
 
   const comp: CompanyConfig = COMPANIES[data.company] || COMPANIES["zaply"];
   const navy = comp.colors.primary;
